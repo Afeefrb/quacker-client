@@ -7,7 +7,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { setContext } from 'apollo-link-context';
 
 const httpLink = createHttpLink({
-    uri:"http://localhost:5000"
+    uri:"https://safe-fortress-70854.herokuapp.com/"
 });
 
 //add the token to the HTTP request

@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {Form, Button} from 'semantic-ui-react'
+import {Form, Button, Image} from 'semantic-ui-react'
 import {useMutation} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { useForm } from '../util/util-hooks';
@@ -11,6 +11,9 @@ function Register(props) {
     const context = useContext(AuthContext);
     
     const [errors,setErrors] = useState({});
+
+    const [loadingPic, setLoadingPic] = useState(false);
+    const [image, setImage] = useState("");
 
 
     const {inputValues, onChangeInput, onSubmitHandler} = useForm(register,{ //% SEQUENCE 1
@@ -35,11 +38,39 @@ function Register(props) {
             //# errors: {username:"empty", email, password}
 
         },
-        variables:inputValues
+        variables:{
+            inputValues,
+            profilePic:image
+        }
+
+       
+        
     })
 
     function register(){   //% SEQUENCE 2
         addUser()
+    }
+
+    const uploadProfilePicture = async(e) => {
+        const files = e.target.files;
+
+        const data = new FormData();
+        data.append("file", files[0]);
+        data.append("upload_preset","quacker");
+
+        setLoadingPic(true);
+
+        const res = await fetch("https://api.cloudinary.com/v1_1/dbyixrfgw/image/upload", {
+            method:"POST",
+            body:data
+        })
+
+        const file = await res.json();
+        console.log(file);
+
+        setImage(file.secure_url);
+        setLoadingPic(false);
+
     }
 
     
@@ -83,6 +114,21 @@ function Register(props) {
                     value={inputValues.confirmPassword}
                     onChange={onChangeInput} /> 
 
+                {/* <Form.Input
+                    label="Profile Picture"
+                    placeholder="Upload profile picture"
+                    name="profilePic"
+                    type="file"
+                    onChange={uploadProfilePicture} 
+                    
+                        />
+
+                        {loadingPic? (
+                            <h1>Loading...</h1>
+                        ):( 
+                            <Image style={{width:"300px"}} src={image} />
+                        )} */}
+
             <Button type="submit" primary>Register</Button>
             </Form>
 
@@ -115,6 +161,7 @@ const REGISTER_USER = gql`
         $email: String!
         $password: String!
         $confirmPassword: String!
+        # $profilePic: String
     ){   
 
         register(
@@ -123,6 +170,7 @@ const REGISTER_USER = gql`
                 email: $email
                 password: $password
                 confirmPassword: $confirmPassword
+                # profilePic: $profilePic
             }
         )
         {
@@ -131,6 +179,7 @@ const REGISTER_USER = gql`
              email
              createdAt
              token
+             profilePic
         } 
     } 
    

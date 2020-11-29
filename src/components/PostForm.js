@@ -56,7 +56,7 @@ function PostForm() {
                     value={inputValues.body}
                     error={error? true: false} />
                 <Button type="submit" color="teal">
-                    Post
+                    Quack
                 </Button>
             </Form.Field>
         </Form>

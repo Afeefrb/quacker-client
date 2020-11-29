@@ -1,3 +1,23 @@
+
+
+a.item:first-of-type{
+    margin-left:0px !important;
+}
+
+a.item{
+    margin-left:10px !important;
+}
+
+
+
+.ui.secondary.pointing.menu > img {
+    margin-left:10px !important;
+    margin-top: 3px !important;
+    width:48.98px;
+    height: 50px;
+}
+
+
 .page-title{
     display: block !important;
     text-align: center;
@@ -5,7 +25,115 @@
     font-size: 2rem;
 }
 
+.ui.container {
+    width: auto !important;
+    margin: 0 0 !important;
+
+}
+
+.ui.menu{
+    margin: 0 !important;
+}
+
+
 .form-container{
-    width:400px;
-    margin:auto;
+    width:100%;
+    /* margin:auto; */
+}
+
+.ui.grid>.row {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    /* width: auto !important; */
+}
+
+.ui[class*="three column"].grid>.column:not(.row), .ui[class*="three column"].grid>.row>.column {
+    width: auto !important;
+}
+
+.ui.fluid.card {
+    width: 100%;
+    max-width: 9999px;
+    min-width: 300px;
+}
+
+.ui.form {
+    font-size: 1rem;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-bottom: 20px !important;
+}
+
+.ui.form .field:last-child, .ui.form .fields:last-child .field {
+    margin-bottom: 0;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* MENU BAR------------------------------ */
+
+.ui.secondary.pointing.menu {
+    margin-left: 0;
+    margin-right: 0;
+    border-bottom: 0px solid rgb(255, 255, 255) !important;
+    position: sticky !important;
+    z-index: 999 !important;
+    top: 0 !important;
+    background: #a8d8f0 !important;
+    width: 100% !important;
+    padding: 3px 0 !important;
+}
+
+
+
+@media(max-width:635px){
+    .ui.container {
+        width: 100% !important;
+
+      
+    }
+
+    .ui.secondary.pointing.menu.sidebar_container {
+        top:8%!important;
+        position: sticky !important;
+        z-index: 999 !important;
+        width:100% !important;
+        transition: 800ms;
+        scroll-margin-bottom: 50px !important;
+    }
+
+    .ui.secondary.pointing.menu > img {
+        margin-top: 10px !important;
+        width:35px;
+        height:35.728px;
+    }
+
+    a.item {
+        font-size: large !important;
+    
+    }
+
+    .sidebar > a.item{
+        font-weight: 600 !important;
+    }
+
+    .ui.grid>.row {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        width:100% !important;
+    }
+
+    .grid>.row>.column {
+        width: 100% !important;
+       
+    }
+
+
+
+    
+
 }

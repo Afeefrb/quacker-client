@@ -12,11 +12,9 @@ function Register(props) {
     
     const [errors,setErrors] = useState({});
 
-    const [loadingPic, setLoadingPic] = useState(false);
-    const [image, setImage] = useState("");
 
-
-    const {inputValues, onChangeInput, onSubmitHandler} = useForm(register,{ //% SEQUENCE 1
+//% SEQUENCE 1
+    const {inputValues, onChangeInput, onSubmitHandler} = useForm(register,{ 
         username:"",
         email:"",
         password:"",
@@ -24,58 +22,38 @@ function Register(props) {
     })
 
 
-   
-
-    const [addUser, {loading}] = useMutation(REGISTER_USER, { //% SEQUENCE 3
-        update(proxy,result) {
+   //% SEQUENCE 3
+    const [addUser, {loading}] = useMutation(REGISTER_USER, { 
+        update(_,result) {
             //# result => {data: {register: {id, email, username, createdAt, token}}}
             context.login_Register(result.data.register)
             props.history.push("/")
         },
         onError(err){
-            console.log("errorx: ",err.graphQLErrors[0].extensions.exception.errors);
+
+
+            console.log("Err: ", err.graphQLErrors[0].extensions.exception.errors);
             setErrors(err.graphQLErrors[0].extensions.exception.errors)
+      
             //# errors: {username:"empty", email, password}
 
         },
-        variables:{
-            inputValues,
-            profilePic:image
-        }
+      
+        variables: inputValues
 
        
         
     })
 
-    function register(){   //% SEQUENCE 2
+    //% SEQUENCE 2
+    function register(){   
         addUser()
-    }
-
-    const uploadProfilePicture = async(e) => {
-        const files = e.target.files;
-
-        const data = new FormData();
-        data.append("file", files[0]);
-        data.append("upload_preset","quacker");
-
-        setLoadingPic(true);
-
-        const res = await fetch("https://api.cloudinary.com/v1_1/dbyixrfgw/image/upload", {
-            method:"POST",
-            body:data
-        })
-
-        const file = await res.json();
-        console.log(file);
-
-        setImage(file.secure_url);
-        setLoadingPic(false);
-
     }
 
     
     return (
         <div className="form-container">
+            <h1>3:25 PM</h1>
             <Form onSubmit={onSubmitHandler} noValidate>
                 <h1>Register</h1>
                 <Form.Input 
@@ -114,23 +92,12 @@ function Register(props) {
                     value={inputValues.confirmPassword}
                     onChange={onChangeInput} /> 
 
-                {/* <Form.Input
-                    label="Profile Picture"
-                    placeholder="Upload profile picture"
-                    name="profilePic"
-                    type="file"
-                    onChange={uploadProfilePicture} 
-                    
-                        />
-
-                        {loadingPic? (
-                            <h1>Loading...</h1>
-                        ):( 
-                            <Image style={{width:"300px"}} src={image} />
-                        )} */}
+         
 
             <Button type="submit" primary>Register</Button>
             </Form>
+
+
 
             {
                 Object.keys(errors).length > 0 && (
@@ -155,39 +122,29 @@ function Register(props) {
 //# register(registerInput:RegisterInput): User! => {id, email, username, createdAt, token}
 
 const REGISTER_USER = gql`
+  mutation register(
+    $username: String!
+    $email: String!
+    $password: String!
+    $confirmPassword: String!
+  ) {
+    register(
+      registerInput: {
+        username: $username
+        email: $email
+        password: $password
+        confirmPassword: $confirmPassword
+      }
+    ) {
+      id
+      email
+      username
+      createdAt
+      token
 
-    mutation register( 
-        $username: String!
-        $email: String!
-        $password: String!
-        $confirmPassword: String!
-        # $profilePic: String
-    ){   
-
-        register(
-            registerInput:{
-                username: $username
-                email: $email
-                password: $password
-                confirmPassword: $confirmPassword
-                # profilePic: $profilePic
-            }
-        )
-        {
-             id 
-             username
-             email
-             createdAt
-             token
-             profilePic
-        } 
-    } 
-   
-
-  
-
-
-
+    }
+  }
 `;
+
 
 export default Register

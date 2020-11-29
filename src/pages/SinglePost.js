@@ -104,7 +104,7 @@ const SinglePost = (props) => {
                              <p>Post a comment</p>
                               <Form>
                                   <div className="ui action input fluid">
-                                    <input 
+                                    <Form.Input
                                       type="text"
                                       placeholder="Comment here"
                                       name="comment"

@@ -48,7 +48,7 @@ function authReducer(state,action){
 function AuthProvider(props) {
     const [state,dispatch] = useReducer(authReducer,initialState);
 
-    function login_Register(userData){
+    function login_Register(userData){ 
         //# userData => {id, email, username, createdAt, token}}}
         localStorage.setItem("jwtToken", userData.token)
         dispatch({
